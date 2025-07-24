@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Camera {
+  id       String @id @default(cuid())
+  name     String
+  location String
+  
+  // Relations
+  incidents Incident[]
+  
+  @@map("cameras")
+}
+
+model Incident {
+  id           String   @id @default(cuid())
+  cameraId     String
+  type         String   // "Unauthorised Access", "Gun Threat", "Face Recognised", etc.
+  tsStart      DateTime
+  tsEnd        DateTime
+  thumbnailUrl String
+  resolved     Boolean  @default(false)
+  
+  // Relations
+  camera Camera @relation(fields: [cameraId], references: [id], onDelete: Cascade)
+  
+  @@map("incidents")
+}
