@@ -9,7 +9,8 @@ import {
   Volume2,
   VolumeX,
   Maximize,
-  Settings
+  Settings,
+  CameraIcon
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import CameraThumbnails from './CameraThumbnails'; // Make sure the path is correct
@@ -115,15 +116,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         {selectedIncident ? (
           <>
             <div className="w-full h-full flex items-center justify-center">
-              <img
-                src={selectedIncident.thumbnailUrl}
-                alt="Incident footage"
-                className="max-w-full max-h-full object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzM0MTU1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk0YTNiOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNhbWVyYSBGZWVkPC90ZXh0Pjwvc3ZnPg==';
-                }}
-              />
+              {selectedIncident?.thumbnailUrl ? (
+  <img
+    src={selectedIncident.thumbnailUrl}
+    alt="Incident footage"
+    className="max-w-full max-h-full object-contain"
+  />
+) : (
+  <div className="text-white">Loading image...</div>
+)}
+
 
               {!isPlaying && (
                 <button
@@ -221,7 +223,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
               className="p-2 hover:bg-slate-600 rounded-lg"
               onClick={() => setShowSettings(prev => !prev)}
             >
-              <Settings className="w-5 h-5" />
+              <CameraIcon className="w-5 h-5" />
             </button>
             
           </div>

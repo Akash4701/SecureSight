@@ -4,103 +4,105 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Clear existing data
-  await prisma.incident.deleteMany();
-  await prisma.camera.deleteMany();
-  
+
   // Create cameras
-  const cameras = await prisma.camera.createMany({
+  await prisma.camera.createMany({
     data: [
       {
-        id: 'cam_001',
+        id: 'Camera-01',
         name: 'Shop Floor A',
-        location: 'Main Production Area'
+        location: 'Main Production Area',
       },
       {
-        id: 'cam_002', 
+        id: 'Camera-02',
         name: 'Vault',
-        location: 'Secure Storage Room'
+        location: 'Secure Storage Room',
       },
       {
-        id: 'cam_003',
+        id: 'Camera-03',
         name: 'Entrance',
-        location: 'Main Building Entrance'
+        location: 'Main Building Entrance',
       },
       {
-        id: 'cam_004',
+        id: 'Camera-04',
         name: 'Parking Lot',
-        location: 'External Parking Area'
-      }
-    ]
+        location: 'External Parking Area',
+      },
+    ],
   });
 
-  // Generate incidents across 24 hours
+  // Define constants
   const now = new Date();
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-  
+
   const incidentTypes = [
     'Unauthorised Access',
-    'Gun Threat', 
+    'Gun Threat',
     'Face Recognised',
     'Suspicious Activity',
     'Loitering',
     'Package Left Behind',
-    'Violence Detected'
+    'Violence Detected',
   ];
 
-  const cameraIds = ['cam_001', 'cam_002', 'cam_003', 'cam_004'];
+  const cameraIds = ['Camera-01', 'Camera-02', 'Camera-03', 'Camera-04'];
+
+  const thumbnails: Record<string, string> = {
+    'Gun Threat': 'https://visionplatform.eu-1.slashinfra.nl/wp-content/uploads/2024/06/weapen-detection-labeling-visionplatform-ai-1024x529.png',
+    'Face Recognised': 'https://www.shutterstock.com/shutterstock/videos/1109664939/thumb/8.jpg?ip=x480',
+    'Unauthorised Access': 'https://www.clearway.co.uk/wp-content/uploads/2024/02/can-you-monitor-CCTV-remotely-scaled-800x566.webp',
+    'Suspicious Activity': 'https://i.ytimg.com/vi/ttsOZ-TuvsA/maxresdefault.jpg',
+    'Loitering': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRWrE-sgEWn9b70hyAo9QdVcloyOu96303OQ&s',
+    'Violence Detected': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7B4L7PQqHEnq0O297SFKoPr6NO5NZFQme_w&s',
+    'Package Left Behind': 'https://www.shutterstock.com/shutterstock/videos/1020248074/thumb/8.jpg?ip=x480',
+  };
 
   const incidents = [];
-  
-  // Generate 15+ incidents throughout the day
+
   for (let i = 0; i < 16; i++) {
     const hourOffset = Math.floor(Math.random() * 24);
     const minuteOffset = Math.floor(Math.random() * 60);
     const secondOffset = Math.floor(Math.random() * 60);
-    
+
     const tsStart = new Date(startOfDay);
     tsStart.setHours(hourOffset, minuteOffset, secondOffset);
-    
+
     const tsEnd = new Date(tsStart);
-    tsEnd.setMinutes(tsEnd.getMinutes() + Math.floor(Math.random() * 10) + 1); // 1-10 minutes duration
-    
-    const randomType = incidentTypes[Math.floor(Math.random() * incidentTypes.length)];
-    const randomCamera = cameraIds[Math.floor(Math.random() * cameraIds.length)];
-    
+    tsEnd.setMinutes(tsEnd.getMinutes() + Math.floor(Math.random() * 10) + 1);
+
+    const type = incidentTypes[Math.floor(Math.random() * incidentTypes.length)];
+    const cameraId = cameraIds[Math.floor(Math.random() * cameraIds.length)];
+    const thumbnailUrl = thumbnails[type] || '/thumbnails/default.jpg';
+
     incidents.push({
-      cameraId: randomCamera,
-      type: randomType,
+      cameraId,
+      type,
       tsStart,
       tsEnd,
-      thumbnailUrl: `/thumbnails/incident_${i + 1}.jpg`,
-      resolved: Math.random() < 0.3 // 30% chance of being resolved
+      thumbnailUrl,
+      resolved: Math.random() < 0.3,
     });
   }
-  
-  // Sort incidents by start time
+
   incidents.sort((a, b) => a.tsStart.getTime() - b.tsStart.getTime());
-  
-  await prisma.incident.createMany({
-    data: incidents
-  });
+
+  await prisma.incident.createMany({ data: incidents });
 
   console.log('✅ Database seeded successfully!');
   console.log(`📹 Created ${cameraIds.length} cameras`);
   console.log(`🚨 Created ${incidents.length} incidents`);
-  
-  // Log some sample data
+
   const sampleIncidents = await prisma.incident.findMany({
     take: 3,
-    include: {
-      camera: true
-    },
-    orderBy: {
-      tsStart: 'desc'
-    }
+    include: { camera: true },
+    orderBy: { tsStart: 'desc' },
   });
-  
+
   console.log('\n📊 Sample incidents:');
   sampleIncidents.forEach((incident, index) => {
-    console.log(`${index + 1}. ${incident.type} at ${incident.camera.name} (${incident.camera.location}) - ${incident.resolved ? 'Resolved' : 'Unresolved'}`);
+    console.log(
+      `${index + 1}. ${incident.type} at ${incident.camera.name} (${incident.camera.location}) - ${incident.resolved ? 'Resolved' : 'Unresolved'}`
+    );
   });
 }
 

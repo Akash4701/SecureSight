@@ -1,3 +1,4 @@
+'use client'
 import { Camera } from "lucide-react";
 
 interface Camera {
@@ -79,28 +80,7 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
   };
 
   // Returns an icon (emoji) for each event type
-  const getEventIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'gun threat':
-        return '🔫';
-      case 'unauthorised access':
-      case 'unauthorized access':
-        return '🚪';
-      case 'face recognised':
-      case 'face recognized':
-        return '🧑‍💼';
-      case 'traffic congestion':
-        return '🚗';
-      case 'multiple events':
-        return '⚡';
-      case 'intrusion':
-        return '🚨';
-      case 'motion detected':
-        return '🎯';
-      default:
-        return '❗';
-    }
-  };
+  
 
   const timelineEvents = convertToTimelineEvents(incidents);
   
@@ -112,8 +92,8 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
     return incident?.camera;
   }).filter(Boolean);
 
-  // Generate 24-hour timeline
-  const hours = Array.from({ length: 24 }, (_, i) => 
+  
+  const hours = Array.from({ length: 26 }, (_, i) => 
     i.toString().padStart(2, '0') + ':00'
   );
 
@@ -188,20 +168,26 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
                       return (
                       <div
   key={event.id}
-  className={`absolute top-2 h-8 px-3 rounded-full text-xs font-medium text-orange-200 flex items-center space-x-2 border border-orange-400 bg-orange-900 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-200`}
+  className={`
+    absolute top-2 h-8 min-w-[100px] max-w-full
+    px-3 rounded-full text-xs font-medium
+    text-orange-100 flex items-center gap-2
+    border border-orange-400 bg-orange-900
+    shadow-md cursor-pointer hover:scale-105
+    transition-transform duration-200
+     overflow-hidden 
+  `}
   style={{
     left: `${startPercent}%`,
     width: `${Math.max(widthPercent, 8)}%`,
-    minWidth: '100px',
   }}
   title={`${event.type} - ${event.startTime} to ${event.endTime} (${Math.round(event.duration / 60)}m)`}
   onClick={() => onSelectIncident(event.incident)}
 >
-  <span className="text-orange-300">
-    {getEventIcon(event.type)}
-  </span>
-  <span>{event.type}</span>
+ 
+  <span >{event.type}</span>
 </div>
+
 
 
                       );

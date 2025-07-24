@@ -1,3 +1,4 @@
+'use client'
 import { AlertTriangle, CheckCircle, Filter, Search } from "lucide-react";
 import IncidentCard from "./IncidentCard";
 import { useEffect, useRef } from "react";
@@ -24,13 +25,15 @@ const IncidentsSidebar = ({
   selectedIncident,
   resolvingIncidents,
   onSelectIncident,
-  onResolveIncident
+  onResolveIncident,
+  countresolved
 }: {
   incidents: Incident[];
   selectedIncident: Incident | null;
   resolvingIncidents: Set<string>;
   onSelectIncident: (incident: Incident) => void;
   onResolveIncident: (id: string) => void;
+  countresolved: number;
 }) => {
   const unresolvedCount = incidents.filter(incident => !incident.resolved).length;
   const resolvedCount = incidents.filter(incident => incident.resolved).length;
@@ -87,7 +90,7 @@ const IncidentsSidebar = ({
               <span className="text-green-400 font-medium text-sm">Resolved</span>
             </div>
             <div className="text-white font-bold text-lg mt-1">
-              {resolvedCount}
+              {countresolved}
             </div>
           </div>
         </div>
@@ -134,9 +137,7 @@ const IncidentsSidebar = ({
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span className="text-green-400 font-medium">System Online</span>
           </div>
-          <div className="text-slate-400">
-            Last updated: {new Date().toLocaleTimeString()}
-          </div>
+          
         </div>
         <div className="mt-2 w-full bg-slate-700 rounded-full h-1">
           <div className="bg-gradient-to-r from-blue-500 to-green-500 h-1 rounded-full w-full animate-pulse"></div>
