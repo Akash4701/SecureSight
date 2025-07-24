@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 export async function PATCH(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: Record<string, string> }
 ) {
   try {
-    const incidentId = context.params.id;
+    const incidentId = params.id;
     
-    // First, get the current incident to flip the resolved status
+    
     const currentIncident = await prisma.incident.findUnique({
       where: { id: incidentId }
     });
