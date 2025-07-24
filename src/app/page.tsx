@@ -110,26 +110,14 @@ const SecurityDashboard = () => {
         {/* Left Section: Video Player and Camera Thumbnails */}
         <div className="flex-1 flex flex-col p-4 lg:p-1 min-w-0">
           {/* Video Player Container - Takes most of the space */}
-          <div className="flex-1 mb-4 min-h-0">
-          {loading ? (
-  <div className="flex flex-col items-center justify-center w-full h-[50vh] text-white">
-    <div className="relative">
-      <div className="w-12 h-12 border-4 border-blue-500 border-dashed rounded-full animate-spin"></div>
-      <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold">
-        Loading
-      </span>
-    </div>
-    <p className="mt-4 text-sm text-slate-400">Fetching latest incidents...</p>
-  </div>
-) : (
-  <VideoPlayer
-    selectedIncident={selectedIncident}
-    incidents={incidents}
-    onSelectIncident={setSelectedIncident}
-  />
-)}
+         
+ <div className="h-full bg-slate-800 rounded-lg border border-slate-700 relative">
+              <VideoPlayer selectedIncident={selectedIncident} incidents={incidents}
+              
+              onSelectIncident={setSelectedIncident} />
+            </div>
 
-          </div>
+          
           
          
         </div>

@@ -44,7 +44,7 @@ const CameraThumbnails: React.FC<CameraThumbnailsProps> = ({
     return Array.from(cameraMap.values());
   };
 
-  const cameraData = getCameraData();
+  const cameraData = getCameraData().slice(-2);
 
   const getIncidentTypeColor = (type: string) => {
     switch (type.toLowerCase()) {
@@ -73,18 +73,10 @@ const CameraThumbnails: React.FC<CameraThumbnailsProps> = ({
   };
 
   return (
-    <div className="bg-slate-800 rounded-lg border border-slate-700 p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-white flex items-center">
-          <Camera className="w-5 h-5 mr-2" />
-          Camera List
-        </h3>
-        <div className="text-sm text-slate-400">
-          {cameraData.length} camera{cameraData.length !== 1 ? 's' : ''} with incidents
-        </div>
-      </div>
+    <div className="bg-slate-800 rounded-lg border border-slate-700 p-4 backdrop-blur-3xl">
+     
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-3">
         {cameraData.map((incident) => (
           <div
             key={incident.cameraId}
@@ -101,9 +93,7 @@ const CameraThumbnails: React.FC<CameraThumbnailsProps> = ({
                 src={incident.thumbnailUrl}
                 alt={`${incident.camera.name} feed`}
                 className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzM0MTU1Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk0YTNiOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNhbWVyYSBGZWVkPC90ZXh0Pjwvc3ZnPg==';
-                }}
+                
               />
               
               {/* Live indicator */}

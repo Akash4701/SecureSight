@@ -166,28 +166,23 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
                       const isSelected = selectedIncident?.id === event.incident.id;
                       
                       return (
-                      <div
-  key={event.id}
-  className={`
-    absolute top-2 h-8 min-w-[100px] max-w-full
-    px-3 rounded-full text-xs font-medium
-    text-orange-100 flex items-center gap-2
-    border border-orange-400 bg-orange-900
-    shadow-md cursor-pointer hover:scale-105
-    transition-transform duration-200
-     overflow-hidden 
-  `}
-  style={{
-    left: `${startPercent}%`,
-    width: `${Math.max(widthPercent, 8)}%`,
-  }}
-  title={`${event.type} - ${event.startTime} to ${event.endTime} (${Math.round(event.duration / 60)}m)`}
-  onClick={() => onSelectIncident(event.incident)}
->
- 
-  <span >{event.type}</span>
-</div>
-
+         <div
+                          key={event.id}
+                          className={`absolute h-6 top-2 rounded-md text-white backdrop-blur-3xl px-2 flex items-center justify-between border cursor-pointer transition-all duration-200 overflow-hidden ${getEventColor(event.type, isSelected)}`}
+                          style={{
+                            left: `${startPercent}%`,
+                            width: `${Math.max(widthPercent, 12)}%`, // minimum 12% width for better visibility
+                            minWidth: '140px'
+                          }}
+                          title={`${event.type} - ${event.startTime} to ${event.endTime} (${Math.round(event.duration / 60)}m)`}
+                          onClick={() => onSelectIncident(event.incident)}
+                        >
+                          <div className="flex items-center space-x-1 overflow-hidden backdrop-blur-lg">
+                            
+                            <span className="font-medium text-xs overflow-hidden whitespace-nowrap" style={{ fontSize: '12px' }}>{event.type}</span>
+                          </div>
+                          
+                        </div>
 
 
                       );
