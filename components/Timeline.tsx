@@ -78,6 +78,30 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
     }
   };
 
+  // Returns an icon (emoji) for each event type
+  const getEventIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'gun threat':
+        return '🔫';
+      case 'unauthorised access':
+      case 'unauthorized access':
+        return '🚪';
+      case 'face recognised':
+      case 'face recognized':
+        return '🧑‍💼';
+      case 'traffic congestion':
+        return '🚗';
+      case 'multiple events':
+        return '⚡';
+      case 'intrusion':
+        return '🚨';
+      case 'motion detected':
+        return '🎯';
+      default:
+        return '❗';
+    }
+  };
+
   const timelineEvents = convertToTimelineEvents(incidents);
   
   // Get unique cameras from incidents
@@ -106,9 +130,7 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
           <h3 className="text-lg font-semibold text-white">
             Security Timeline ({incidents.length} active incidents)
           </h3>
-          <div className="text-sm text-yellow-400 bg-yellow-400 bg-opacity-20 px-3 py-1 rounded">
-            {currentTime.toLocaleTimeString('en-US', { hour12: false })}
-          </div>
+         
         </div>
         
         {/* Timeline Header */}
@@ -122,7 +144,7 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
             </div>
             {/* Current time indicator */}
             <div 
-              className="absolute top-0 w-0.5 h-8 bg-yellow-400 z-10"
+              className="absolute top-0 w-0.5 h-8 bg-yellow-100 z-10"
               style={{ left: `${currentTimePercent}%` }}
               title={`Current Time: ${formatTime(currentTime)}`}
             />
@@ -148,7 +170,9 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
                   <div className="w-40 flex items-center space-x-2">
                     <Camera className="w-4 h-4 text-slate-400" />
                     <div>
-                      <div className="text-sm text-slate-300">{camera.name}</div>
+                      <span className="text-xs text-slate-400 ml-2">
+                        Camera {String(parseInt(camera.id.replace(/\D/g, ''))).padStart(2, '0')}
+                     </span>
                       <div className="text-xs text-slate-500">{camera.location}</div>
                     </div>
                   </div>
@@ -162,30 +186,24 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
                       const isSelected = selectedIncident?.id === event.incident.id;
                       
                       return (
-                        <div
-                          key={event.id}
-                          className={`absolute h-8 top-2 rounded text-xs text-white px-2 flex items-center justify-between border cursor-pointer transition-all duration-200 ${getEventColor(event.type, isSelected)}`}
-                          style={{
-                            left: `${startPercent}%`,
-                            width: `${Math.max(widthPercent, 8)}%`, // minimum 8% width for clickability
-                            minWidth: '80px'
-                          }}
-                          title={`${event.type} - ${event.startTime} to ${event.endTime} (${Math.round(event.duration / 60)}m)`}
-                          onClick={() => onSelectIncident(event.incident)}
-                        >
-                          <div className="flex items-center space-x-1 truncate">
-                            <span className="truncate font-medium">{event.type}</span>
-                            {event.type.toLowerCase().includes('multiple') && (
-                              <span className="text-yellow-300">⚠</span>
-                            )}
-                            {event.type.toLowerCase().includes('gun') && (
-                              <span className="text-red-200">🚨</span>
-                            )}
-                          </div>
-                          <div className="text-xs opacity-90 ml-2 shrink-0">
-                            {event.startTime}
-                          </div>
-                        </div>
+                      <div
+  key={event.id}
+  className={`absolute top-2 h-8 px-3 rounded-full text-xs font-medium text-orange-200 flex items-center space-x-2 border border-orange-400 bg-orange-900 shadow-sm cursor-pointer hover:scale-105 transition-transform duration-200`}
+  style={{
+    left: `${startPercent}%`,
+    width: `${Math.max(widthPercent, 8)}%`,
+    minWidth: '100px',
+  }}
+  title={`${event.type} - ${event.startTime} to ${event.endTime} (${Math.round(event.duration / 60)}m)`}
+  onClick={() => onSelectIncident(event.incident)}
+>
+  <span className="text-orange-300">
+    {getEventIcon(event.type)}
+  </span>
+  <span>{event.type}</span>
+</div>
+
+
                       );
                     })}
                     

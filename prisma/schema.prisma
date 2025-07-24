@@ -24,8 +24,7 @@ model Camera {
 model Incident {
   id           String   @id @default(cuid())
   cameraId     String
-  type         String   // "Unauthorised Access", "Gun Threat", "Face Recognised", etc.
-  tsStart      DateTime
+  type         String   
   tsEnd        DateTime
   thumbnailUrl String
   resolved     Boolean  @default(false)

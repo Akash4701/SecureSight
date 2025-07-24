@@ -88,7 +88,9 @@ const IncidentCard = ({
           </div>
           <div className="flex items-center space-x-1 text-sm text-slate-300 mb-1">
             <MapPin className="w-3 h-3" />
-            <span>{incident.camera.name}</span>
+            <span className="text-xs text-slate-400 ml-2">
+                        Camera {String(parseInt(incident.camera.id.replace(/\D/g, ''))).padStart(2, '0')}
+                     </span>
           </div>
           <div className="flex items-center space-x-1 text-xs text-slate-400">
             <Clock className="w-3 h-3" />

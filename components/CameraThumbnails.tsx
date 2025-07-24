@@ -152,7 +152,7 @@ const CameraThumbnails: React.FC<CameraThumbnailsProps> = ({
               <div className="flex items-center justify-between">
                 <div className="min-w-0 flex-1">
                   <h4 className="text-sm font-semibold text-white truncate">
-                    {incident.camera.name}
+                    {incident.camera.id}
                   </h4>
                   <p className="text-xs text-slate-300 truncate">
                     {incident.camera.location}
