@@ -311,21 +311,7 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
           </div>
         </div>
 
-        {/* Legend */}
-        <div className="mt-6 pt-4 border-t border-slate-700">
-          <div className="text-sm text-slate-400 mb-2">Event Types:</div>
-          <div className="flex flex-wrap gap-3 text-xs">
-            {['Gun Threat', 'Unauthorised Access', 'Face Recognised', 'Traffic Congestion', 'Intrusion', 'Motion Detected'].map((type) => (
-              <div key={type} className="flex items-center space-x-2">
-                <div className={`w-3 h-3 rounded border ${getEventColor(type).split(' ').slice(1, 3).join(' ')}`}></div>
-                <span className="text-slate-300">{type}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-2 text-xs text-slate-500">
-            💡 Drag the yellow ruler to any time, or click on events to jump the ruler to them
-          </div>
-        </div>
+      
       </div>
     </div>
   );

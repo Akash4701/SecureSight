@@ -1,4 +1,5 @@
 'use client'
+import { useEffect, useState } from 'react';
 import { useSecurityContext } from '../../context/SecurityContext';
 import Header from '../../components/Navbar';
 import VideoPlayer from '../../components/VideoPlayer';
@@ -6,18 +7,36 @@ import IncidentsSidebar from '../../components/IncidentSideBar';
 import Timeline from '../../components/Timeline';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-
- const SecurityDashboard = () => {
+const SecurityDashboard = () => {
   const {
     incidents,
     selectedIncident,
     resolvingIncidents,
-    countResolved,
+    // assuming this exists in your context
     loading,
     error,
     setSelectedIncident,
     resolveIncident,
   } = useSecurityContext();
+  const [countResolved, setCountResolved] = useState(0);
+
+  // Fetch count of resolved incidents only once when component mounts
+  useEffect(() => {
+    const fetchResolvedCount = async () => {
+      try {
+        const res = await fetch('/api/incidents?resolved=true');
+        const data = await res.json();
+        console.log('data', data);
+        if (res.ok && data?.resolvedCount !== undefined) {
+          setCountResolved(data.resolvedCount);
+        }
+      } catch (err) {
+        console.error("Failed to fetch resolved count", err);
+      }
+    };
+
+    fetchResolvedCount();
+  }, [setCountResolved]); 
 
   if (loading) {
     return <LoadingSpinner />;
@@ -78,4 +97,5 @@ import LoadingSpinner from '../../components/LoadingSpinner';
     </div>
   );
 };
-export default SecurityDashboard
+
+export default SecurityDashboard;

@@ -8,11 +8,18 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const resolved = searchParams.get('resolved');
     
-    // Build where clause
+    if (resolved === 'true') {
+      const count = await prisma.incident.count({
+        where: { resolved: true }
+      });
+      return NextResponse.json({ resolvedCount: count });
+    }
+
+    // Else return incidents (unresolved or all if param is not present)
     const whereClause = resolved !== null ? {
       resolved: resolved === 'true'
     } : {};
-    
+
     const incidents = await prisma.incident.findMany({
       where: whereClause,
       include: {
@@ -25,10 +32,10 @@ export async function GET(request: NextRequest) {
         }
       },
       orderBy: {
-        tsStart: 'desc' 
+        tsStart: 'desc'
       }
     });
-    
+
     return NextResponse.json(incidents);
   } catch (error) {
     console.error('Error fetching incidents:', error);

@@ -63,14 +63,7 @@ const IncidentsSidebar = ({
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors">
-              <Search className="w-4 h-4" />
-            </button>
-            <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors">
-              <Filter className="w-4 h-4" />
-            </button>
-          </div>
+          
         </div>
 
         {/* Status Summary */}

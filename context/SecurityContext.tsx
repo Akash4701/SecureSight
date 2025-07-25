@@ -23,7 +23,6 @@ interface SecurityContextType {
   incidents: Incident[];
   selectedIncident: Incident | null;
   resolvingIncidents: Set<string>;
-  countResolved: number;
   loading: boolean;
   error: string | null;
   // Actions
@@ -50,7 +49,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [resolvingIncidents, setResolvingIncidents] = useState<Set<string>>(new Set());
-  const [countResolved, setCountResolved] = useState(0);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -99,7 +98,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
       
       // Optimistically update UI
       setIncidents(prev => prev.filter(incident => incident.id !== incidentId));
-      setCountResolved(prev => prev + 1);
+      
       
       // Update selected incident if it was the resolved one
       if (selectedIncident?.id === incidentId) {
@@ -134,7 +133,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     incidents,
     selectedIncident,
     resolvingIncidents,
-    countResolved,
+    
     loading,
     error,
     setSelectedIncident,
@@ -144,7 +143,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     incidents,
     selectedIncident,
     resolvingIncidents,
-    countResolved,
+    
     loading,
     error,
     resolveIncident,
