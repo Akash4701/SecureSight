@@ -130,8 +130,21 @@ const Timeline = ({ incidents, selectedIncident, onSelectIncident }: TimelinePro
     setRulerPosition(newPosition);
   }, []);
 
-  // Handle event click to jump ruler to event
-  const handleEventClick = useCallback((event: any, e: React.MouseEvent) => {
+  interface TimelineEvent {
+  id: string;
+  type: string;
+  cameraId: string;
+  cameraName: string;
+  startTime: string;
+  endTime: string;
+  duration: number;
+  startDate: Date;
+  incident: Incident;
+}
+
+
+  
+  const handleEventClick = useCallback((event: TimelineEvent, e: React.MouseEvent) => {
     e.stopPropagation(); // prevent timeline click
     const startHour = event.startDate.getHours();
     const startMinute = event.startDate.getMinutes();

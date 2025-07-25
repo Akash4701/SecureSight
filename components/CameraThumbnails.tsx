@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Camera, AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import React from 'react';
+import { Camera, AlertCircle, CheckCircle } from 'lucide-react';
 
 interface Camera {
   id: string;

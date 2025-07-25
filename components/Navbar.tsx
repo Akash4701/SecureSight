@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Clock, MapPin, AlertTriangle, Shield, CheckCircle, Camera, Users, Menu, X } from 'lucide-react';
+import {  AlertTriangle, Shield,  Camera, Users, Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

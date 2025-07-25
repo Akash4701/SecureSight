@@ -8,12 +8,11 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
-  Maximize,
-  Settings,
+ 
   CameraIcon
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-import CameraThumbnails from './CameraThumbnails'; // Make sure the path is correct
+import CameraThumbnails from './CameraThumbnails';
 
 interface Camera {
   id: string;
