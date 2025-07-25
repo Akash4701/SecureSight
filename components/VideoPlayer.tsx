@@ -94,7 +94,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   useEffect(() => {
     if (selectedIncident) {
       setCurrentTime(0);
-      setIsPlaying(false);
+      setIsPlaying(true);
       const start = new Date(selectedIncident.tsStart).getTime();
       const end = new Date(selectedIncident.tsEnd).getTime();
       setDuration(Math.floor((end - start) / 1000));

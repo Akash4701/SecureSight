@@ -126,9 +126,7 @@ export const SecurityProvider = ({ children }: SecurityProviderProps) => {
     fetchIncidents();
     
     // Set up polling every 30 seconds
-    const interval = setInterval(fetchIncidents, 30000);
-    
-    return () => clearInterval(interval);
+   
   }, [fetchIncidents]);
 
   // Memoize context value to prevent unnecessary re-renders
